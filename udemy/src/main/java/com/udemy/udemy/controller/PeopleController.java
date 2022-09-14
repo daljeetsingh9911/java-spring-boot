@@ -2,12 +2,18 @@ package com.udemy.udemy.controller;
 
 import com.udemy.udemy.model.Person;
 import com.udemy.udemy.repository.PersonRepository;
+import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Parameter;
+import java.util.List;
 
 @RequestMapping("/people") // define the base path for all the sub routes
 @Controller // tell the Spring that this call is used or act as router
@@ -20,14 +26,44 @@ public class PeopleController {
         this.personRepository = personRepository;
     }
 
-    //@ModelAttribute("people")
+    @ModelAttribute("people")
     public  Iterable<Person> getPeople(){
         return  personRepository.findAll();
     }
 
     @GetMapping // define the get request path
-    public String ShowPeoplePage(Model model){
-        model.addAttribute("people",getPeople());
+    public String ShowPeoplePage(){
         return  "people"; // call the template from resources/templates/people.html
     }
+
+    @ModelAttribute
+    public Person personFormData(){ // model for incoming data from form
+        Person object =  new Person(); // instance of the person call
+        return object;
+    }
+    @PostMapping
+    public String  SavePerson(@Valid Person person , Errors errors){
+        if(!errors.hasErrors()){
+            personRepository.save(person); // save the data into database
+            return  "redirect:people"; //redirect the page into main method
+        }
+
+        return  "people";
+    }
+
+    @PostMapping(params = "delete=true")
+    public String  DeletePersons(@RequestParam("checkBox[]") List<Long> DeletedIds){
+        //@RequestParam("checkBox[]")  = name of input
+        //List<Long>   = type cast into array of Long ids
+        // DeletedIds any user defined variable
+
+        if(!DeletedIds.isEmpty()){
+            System.out.print(DeletedIds);
+           personRepository.deleteAllById(DeletedIds);
+        }
+        return  "redirect:people";
+    }
+
+
+
 }

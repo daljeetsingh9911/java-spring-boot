@@ -14,10 +14,10 @@ public class LocalDateFormatter implements Formatter<LocalDate> { // implements 
     // so LocalDate Formatter has two default methods which are written blow
     // so we need to overRide these to method for our custom output
 
-    private  final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM,dd,yyyy");
+    private  final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Override
     public LocalDate parse(String text, Locale locale) throws ParseException { // convert string into date format
-        return null;
+        return LocalDate.parse(text,DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @Override
