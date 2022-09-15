@@ -2,7 +2,6 @@ package com.udemy.udemy.controller;
 
 import com.udemy.udemy.model.Person;
 import com.udemy.udemy.repository.PersonRepository;
-import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +9,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Parameter;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/people") // define the base path for all the sub routes
 @Controller // tell the Spring that this call is used or act as router
@@ -41,13 +38,13 @@ public class PeopleController {
         Person object =  new Person(); // instance of the person call
         return object;
     }
+
     @PostMapping
     public String  SavePerson(@Valid Person person , Errors errors){
         if(!errors.hasErrors()){
             personRepository.save(person); // save the data into database
             return  "redirect:people"; //redirect the page into main method
         }
-
         return  "people";
     }
 
@@ -64,6 +61,17 @@ public class PeopleController {
         return  "redirect:people";
     }
 
+    @PostMapping(params = "edit=true")
+    public String  EditPersons(@RequestParam("checkBox[]") List<Long> DeletedIds,Model model){
+        //@RequestParam("checkBox[]")  = name of input
+        //List<Long>   = type cast into array of Long ids
+        // DeletedIds any user defined variable
 
+        if(!DeletedIds.isEmpty()){
+           Optional<Person> person = personRepository.findById(DeletedIds.get(0)); // fetch first record from the array table
+            model.addAttribute("person",person);
+        }
+        return  "people";
+    }
 
 }
