@@ -37,4 +37,5 @@ public class Person {
     @Past(message = "date must be past date") //validation rule
     private  LocalDate dob;
     private  BigDecimal salary;
+    private  String photo;
 }
