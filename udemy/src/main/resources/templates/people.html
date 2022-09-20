@@ -61,6 +61,19 @@
                 </tr>
                 </tbody>
             </table>
+                <div class="text-right">
+                    <nav aria-label="Page navigation example float-end" th:if="${people.getTotalPages() > 0}">
+                        <ul class="pagination">
+                            <li class="page-item"   th:classappend="${people.first}?'disabled'"><a class="page-link" th:href="@{'/people?page='+${people.number -1 }}">Previous</a></li>
+                            <li class="page-item" th:each="i:${#numbers.sequence(1, people.getTotalPages())}"
+                            th:classappend="${i}==${people.number}?'active'"
+                            >
+                                <a class="page-link" th:href="@{'/people?page='+${i}}" th:text=${i}>@NUMBER</a>
+                            </li>
+                            <li class="page-item"  th:classappend="${people.last}?'disabled'"><a class="page-link" th:href="@{'/people?page='+${people.number +1 }}">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
                 <button type="submit" name="edit"  class="btn btn-danger mt-2 mr-5" value="true">
                     Edit user
                 </button>

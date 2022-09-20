@@ -3,14 +3,14 @@ package com.udemy.udemy.repository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Component
+@Repository
 public class FileStorageRepository {
 
     @Value("${FOLDER}")

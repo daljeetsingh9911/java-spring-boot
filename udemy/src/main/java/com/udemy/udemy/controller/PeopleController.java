@@ -4,7 +4,11 @@ import com.udemy.udemy.model.Person;
 import com.udemy.udemy.repository.FileStorageRepository;
 import com.udemy.udemy.repository.PersonRepository;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,6 +30,7 @@ public class PeopleController {
     private PersonRepository personRepository;
     private FileStorageRepository fileStorageRepository;
 
+    @Autowired
     public PeopleController(PersonRepository personRepository, FileStorageRepository fileStorageRepository) {
         this.personRepository = personRepository;
         this.fileStorageRepository = fileStorageRepository;
@@ -33,8 +38,8 @@ public class PeopleController {
 
 
     @ModelAttribute("people")
-    public  Iterable<Person> getPeople(){
-        return  personRepository.findAll();
+    public Page<Person> findAll(@PageableDefault(size = 2) Pageable pageable) {
+        return personRepository.findAll(pageable);
     }
 
     @GetMapping // define the get request path
