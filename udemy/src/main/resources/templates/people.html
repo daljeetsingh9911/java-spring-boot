@@ -65,7 +65,7 @@
                     <nav aria-label="Page navigation example float-end" th:if="${people.getTotalPages() > 0}">
                         <ul class="pagination">
                             <li class="page-item"   th:classappend="${people.first}?'disabled'"><a class="page-link" th:href="@{'/people?page='+${people.number -1 }}">Previous</a></li>
-                            <li class="page-item" th:each="i:${#numbers.sequence(1, people.getTotalPages())}"
+                            <li class="page-item" th:each="i:${#numbers.sequence(1, people.getTotalPages()-1)}"
                             th:classappend="${i}==${people.number}?'active'"
                             >
                                 <a class="page-link" th:href="@{'/people?page='+${i}}" th:text=${i}>@NUMBER</a>
